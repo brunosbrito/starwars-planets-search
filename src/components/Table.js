@@ -1,12 +1,27 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function Table() {
-  const { data } = useContext(StarWarsContext);
-  console.log(data);
+  const { data, filters } = useContext(StarWarsContext);
+  const [search, setSearch] = useState([]);
+
+  const filterName = () => {
+    const dataFilterName = data
+      .filter((el) => el.name.toUpperCase().includes(filters.toUpperCase()));
+    setSearch(dataFilterName);
+  };
+  console.log(search);
+
+  useEffect(() => {
+    // setSearch(data);
+    // if (Object.values(filters).length > 1) {
+    //   filterName();
+    // }
+    filterName();
+  }, [data, filters]);
 
   return (
-    <table>
+    <table className="table table-dark table-responsive">
       <thead>
         <tr>
           <th>Name</th>
@@ -27,7 +42,7 @@ function Table() {
       </thead>
 
       <tbody>
-        {data.map((el) => (
+        {search.map((el) => (
           <tr key={ el.name }>
             <td>{el.name}</td>
             <td>{el.rotation_period}</td>
