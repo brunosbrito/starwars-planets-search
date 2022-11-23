@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function Form() {
@@ -29,15 +29,15 @@ function Form() {
     handleOptions();
   };
 
-  console.log(numbers);
+  useEffect(() => {
+    setOptions({
+      columFilter: values[0],
+      comparisonFilter: 'maior que',
+      number: 0,
+    });
+  }, [values]);
 
-  // useEffect(() => {
-  //   setValues({
-  //     columFilter: options[0],
-  //     comparisonFilter: 'maior que',
-  //     number: 0,
-  //   }, [values, options]);
-  // });
+  console.log(numbers);
 
   return (
     <div>
@@ -51,7 +51,6 @@ function Form() {
         <select
           data-testid="column-filter"
           name="columFilter"
-          // value={ options.columFilter }
           onChange={ handleChange }
         >
 
@@ -72,6 +71,7 @@ function Form() {
           type="number"
           data-testid="value-filter"
           name="number"
+          value={ options.number }
           onChange={ handleChange }
         />
         <button
