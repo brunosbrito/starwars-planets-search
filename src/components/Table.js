@@ -2,23 +2,42 @@ import React, { useContext, useEffect, useState } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function Table() {
-  const { data, filters } = useContext(StarWarsContext);
+  const { data, filters, filterTwo } = useContext(StarWarsContext);
   const [search, setSearch] = useState([]);
+  const { columFilter, comparisonFilter, number } = filterTwo;
+
+  const filterOptions = (arr) => {
+    let filterByOptions = [];
+    switch (comparisonFilter) {
+    case 'maior que':
+      filterByOptions = arr
+        .filter((el) => +el[columFilter] > +number);
+      break;
+    case 'menor que':
+      filterByOptions = arr
+        .filter((el) => +el[columFilter] < +number);
+      break;
+    case 'igual a':
+      filterByOptions = arr
+        .filter((el) => +el[columFilter] === +number);
+      break;
+    default:
+      filterByOptions = arr;
+    }
+    return filterByOptions;
+  };
 
   const filterName = () => {
     const dataFilterName = data
       .filter((el) => el.name.toUpperCase().includes(filters.toUpperCase()));
-    setSearch(dataFilterName);
+    setSearch(filterOptions(dataFilterName));
   };
-  console.log(search);
+  console.log(filterTwo);
+  console.log(filterOptions);
 
   useEffect(() => {
-    // setSearch(data);
-    // if (Object.values(filters).length > 1) {
-    //   filterName();
-    // }
     filterName();
-  }, [data, filters]);
+  }, [data, filters, filterTwo]);
 
   return (
     <table className="table table-dark table-responsive">
