@@ -7,7 +7,10 @@ function Form() {
     comparisonFilter: 'maior que',
     number: 0,
   });
-  const { setFilters, setFilterTwo } = useContext(StarWarsContext);
+  const { setFilters, setFilterTwo, filterTwo } = useContext(StarWarsContext);
+
+  const newObj = [{ ...filterTwo }];
+  console.log(newObj);
 
   const handleChange = ({ target }) => {
     setOptions({ ...options, [target.name]: target.value });

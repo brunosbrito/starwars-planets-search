@@ -4,40 +4,43 @@ import StarWarsContext from '../context/StarWarsContext';
 function Table() {
   const { data, filters, filterTwo } = useContext(StarWarsContext);
   const [search, setSearch] = useState([]);
+  const [filteredData, setFilteredData] = useState(data);
   const { columFilter, comparisonFilter, number } = filterTwo;
 
   const filterOptions = (arr) => {
-    let filterByOptions = [];
     switch (comparisonFilter) {
     case 'maior que':
-      filterByOptions = arr
-        .filter((el) => +el[columFilter] > +number);
-      break;
+      return arr.filter((el) => +el[columFilter] > +number);
     case 'menor que':
-      filterByOptions = arr
-        .filter((el) => +el[columFilter] < +number);
-      break;
+      return arr.filter((el) => +el[columFilter] < +number);
     case 'igual a':
-      filterByOptions = arr
-        .filter((el) => +el[columFilter] === +number);
-      break;
+      return arr.filter((el) => +el[columFilter] === +number);
     default:
-      filterByOptions = arr;
+      return arr;
     }
-    return filterByOptions;
   };
 
   const filterName = () => {
+    const dataFilterName = (!filteredData.length ? data : filteredData)
+      .filter((el) => el.name.toUpperCase().includes(filters.toUpperCase()));
+    const filtered = filterOptions(dataFilterName);
+    setSearch(filtered);
+    setFilteredData(filtered);
+  };
+
+  useEffect(() => {
+    setFilteredData(data);
+  }, [data]);
+
+  useEffect(() => {
     const dataFilterName = data
       .filter((el) => el.name.toUpperCase().includes(filters.toUpperCase()));
-    setSearch(filterOptions(dataFilterName));
-  };
-  console.log(filterTwo);
-  console.log(filterOptions);
+    setSearch(dataFilterName);
+  }, [filters]);
 
   useEffect(() => {
     filterName();
-  }, [data, filters, filterTwo]);
+  }, [data, filterTwo]);
 
   return (
     <table className="table table-dark table-responsive">
