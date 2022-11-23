@@ -7,18 +7,37 @@ function Form() {
     comparisonFilter: 'maior que',
     number: 0,
   });
-  const { setFilters, setFilterTwo, filterTwo } = useContext(StarWarsContext);
 
-  const newObj = [{ ...filterTwo }];
-  console.log(newObj);
+  const [values, setValues] = useState([
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+  ]);
+  const { setFilters, setFilterTwo } = useContext(StarWarsContext);
+  const [numbers, setNumbers] = useState([]);
 
   const handleChange = ({ target }) => {
     setOptions({ ...options, [target.name]: target.value });
   };
 
+  const handleOptions = () => {
+    const filterOptions = values.filter((el) => el !== options.columFilter);
+    setValues(filterOptions);
+  };
+
   const handleClick = () => {
     setFilterTwo(options);
+    setNumbers([...numbers, options]);
+    handleOptions();
   };
+
+  console.log(numbers);
+
+  // useEffect(() => {
+  //   setValues({
+  //     columFilter: options[0],
+  //     comparisonFilter: 'maior que',
+  //     number: 0,
+  //   }, [values, options]);
+  // });
 
   return (
     <div>
@@ -30,17 +49,15 @@ function Form() {
           onChange={ ({ target }) => setFilters(target.value) }
         />
         <select
-          name="columFilter"
-          value={ options.columFilter }
-          onChange={ handleChange }
           data-testid="column-filter"
+          name="columFilter"
+          // value={ options.columFilter }
+          onChange={ handleChange }
         >
-          <option>population</option>
-          <option>orbital_period</option>
-          <option>diameter</option>
-          <option>rotation_period</option>
-          <option>surface_water</option>
+
+          {values.map((el) => <option key={ el } value={ el }>{el}</option>)}
         </select>
+
         <select
           name="comparisonFilter"
           value={ options.comparisonFilter }
@@ -52,11 +69,10 @@ function Form() {
           <option>igual a</option>
         </select>
         <input
-          name="number"
-          value={ options.number }
-          data-testid="value-filter"
-          onChange={ handleChange }
           type="number"
+          data-testid="value-filter"
+          name="number"
+          onChange={ handleChange }
         />
         <button
           type="button"
@@ -68,6 +84,14 @@ function Form() {
         </button>
 
       </form>
+      <div>
+        { numbers.map((el) => (
+          <div key={ el.columFilter }>
+            <p>{`${el.columFilter} ${el.comparisonFilter}`}</p>
+            <button type="button">X</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
