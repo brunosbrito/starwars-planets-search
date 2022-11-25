@@ -2,35 +2,36 @@ import React, { useContext, useEffect, useState } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function Table() {
-  const { data, filters, filterTwo } = useContext(StarWarsContext);
+  const { data, filters, numbers } = useContext(StarWarsContext);
   const [search, setSearch] = useState([]);
-  const [filteredData, setFilteredData] = useState(data);
-  const { columFilter, comparisonFilter, number } = filterTwo;
 
-  const filterOptions = (arr) => {
-    switch (comparisonFilter) {
+  const filterOptions = (arr, filter) => {
+    switch (filter.comparisonFilter) {
     case 'maior que':
-      return arr.filter((el) => +el[columFilter] > +number);
+      return arr.filter((el) => +el[filter.columFilter] > +filter.number);
     case 'menor que':
-      return arr.filter((el) => +el[columFilter] < +number);
+      return arr.filter((el) => +el[filter.columFilter] < +filter.number);
     case 'igual a':
-      return arr.filter((el) => +el[columFilter] === +number);
+      return arr.filter((el) => +el[filter.columFilter] === +filter.number);
     default:
       return arr;
     }
   };
 
-  const filterName = () => {
-    const dataFilterName = (!filteredData.length ? data : filteredData)
-      .filter((el) => el.name.toUpperCase().includes(filters.toUpperCase()));
-    const filtered = filterOptions(dataFilterName);
-    setSearch(filtered);
-    setFilteredData(filtered);
+  const filterByNumericValue = (planets) => {
+    let copyArray = [...planets];
+    numbers.forEach((filter) => {
+      copyArray = filterOptions(copyArray, filter);
+    });
+    return copyArray;
   };
 
-  useEffect(() => {
-    setFilteredData(data);
-  }, [data]);
+  const filterName = () => {
+    const dataFilterName = (data)
+      .filter((el) => el.name.toUpperCase().includes(filters.toUpperCase()));
+    const filtered = filterByNumericValue(dataFilterName);
+    setSearch(filtered);
+  };
 
   useEffect(() => {
     const dataFilterName = data
@@ -40,7 +41,8 @@ function Table() {
 
   useEffect(() => {
     filterName();
-  }, [data, filterTwo]);
+    console.log(numbers);
+  }, [data, numbers]);
 
   return (
     <table className="table table-dark table-responsive">

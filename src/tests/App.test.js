@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import App from '../App';
 import StarWarsProvider from '../context/StarWarsProvider'
@@ -48,12 +47,31 @@ describe('Teste do projeto Star Wars Planets', () => {
     render(<StarWarsProvider >
            <App />
            </StarWarsProvider> )
-           
-    setTimeout(() => {
-      const tatooine = screen.getByText(/tatoine/i)
-      expect(tatooine).toBeInTheDocument()
-      }, 4000)
-      
-    })
 
+           await waitFor ( 
+            async () => expect( await screen.getByRole('cell', { name: /tatooine/i})).toBeInTheDocument(),
+            {timeout: 3000}
+          )
+  })
+
+  it ('testa o filtro menor que e igual a', async () => {
+    render(<StarWarsProvider >
+      <App />
+    </StarWarsProvider> )
+
+    const buttonFilter = screen.getByTestId("button-filter")
+    userEvent.selectOptions(
+      screen.getByTestId("comparison-filter"),
+     screen.getByRole("option", { name: "menor que" })
+    );
+    userEvent.click(buttonFilter);
+    userEvent.selectOptions(
+      screen.getByTestId("comparison-filter"),
+      screen.getByRole("option", { name: "igual a" })
+    );
+    userEvent.click(buttonFilter);
+
+  })
+
+           
 })
