@@ -45,46 +45,48 @@ function Table() {
   }, [data, numbers]);
 
   return (
-    <table className="table table-dark table-responsive">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Rotation Period</th>
-          <th>Orbital Period</th>
-          <th>Diameter</th>
-          <th>Climate</th>
-          <th>Gravity</th>
-          <th>Terrain</th>
-          <th> Surface Water</th>
-          <th>Population</th>
-          <th>Films</th>
-          <th>Created</th>
-          <th>Edited</th>
-          <th>URL</th>
+    <div className="container overflow-scroll" style={ { marginTop: '10px' } }>
+      <table className="table table-dark table-striped table-responsive">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Rotation Period</th>
+            <th>Orbital Period</th>
+            <th>Diameter</th>
+            <th>Climate</th>
+            <th>Gravity</th>
+            <th>Terrain</th>
+            <th> Surface Water</th>
+            <th>Population</th>
+            <th>Films</th>
+            <th>Created</th>
+            <th>Edited</th>
+            <th>URL</th>
 
-        </tr>
-      </thead>
-
-      <tbody>
-        {search.map((el) => (
-          <tr key={ el.name }>
-            <td>{el.name}</td>
-            <td>{el.rotation_period}</td>
-            <td>{el.orbital_period}</td>
-            <td>{el.diameter}</td>
-            <td>{el.climate}</td>
-            <td>{el.gravity}</td>
-            <td>{el.terrain}</td>
-            <td>{el.surface_water}</td>
-            <td>{el.population}</td>
-            <td>{el.films}</td>
-            <td>{el.created}</td>
-            <td>{el.edited}</td>
-            <td>{el.url}</td>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+
+        <tbody className="table-group-divider">
+          {search.map((el) => (
+            <tr key={ el.name }>
+              <td>{el.name}</td>
+              <td>{el.rotation_period}</td>
+              <td>{el.orbital_period}</td>
+              <td>{el.diameter}</td>
+              <td>{el.climate}</td>
+              <td>{el.gravity}</td>
+              <td>{el.terrain}</td>
+              <td>{el.surface_water}</td>
+              <td>{el.population}</td>
+              <td>{el.films.map((films) => <p key={ films }>{films}</p>)}</td>
+              <td>{el.created}</td>
+              <td>{el.edited}</td>
+              <td>{el.url}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
 
   );
 }

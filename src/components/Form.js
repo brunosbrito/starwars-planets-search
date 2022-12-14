@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
+import Logo from '../img/logo-star-wars.png';
 
 function Form() {
   const [options, setOptions] = useState({
@@ -24,7 +25,7 @@ function Form() {
     setValues(filterOptions);
   };
   const handleClick = () => {
-    setFilterTwo(options);
+    // setFilterTwo(options);
     setNumbers([...numbers, options]);
     handleOptions();
   };
@@ -55,69 +56,106 @@ function Form() {
   console.log(numbers);
   return (
     <div>
-      <input
-        data-testid="name-filter"
-        type="text"
-        placeholder="pesquisar"
-        onChange={ ({ target }) => setFilters(target.value) }
-      />
-      <select
-        data-testid="column-filter"
-        name="columFilter"
-        onChange={ handleChange }
-      >
-        {values.map((el) => <option key={ el } value={ el }>{el}</option>)}
-      </select>
-      <select
-        name="comparisonFilter"
-        value={ options.comparisonFilter }
-        data-testid="comparison-filter"
-        onChange={ handleChange }
-      >
-        <option>maior que</option>
-        <option>menor que</option>
-        <option>igual a</option>
-      </select>
-      <input
-        type="number"
-        data-testid="value-filter"
-        name="number"
-        value={ options.number }
-        onChange={ handleChange }
-      />
-      <button
-        type="button"
-        data-testid="button-filter"
-        onClick={ handleClick }
-      >
-        Filtrar
-      </button>
+      <div className="text-center" style={ { paddingTop: '80px' } }>
+        <img
+          style={ { opacity: '60' } }
+          src={ Logo }
+          alt="logo Star Wars"
+        />
+      </div>
+      <div className="container" style={ { paddingTop: '30px' } }>
+        <div className="col-md-6">
+          <input
+            style={ { marginBottom: '10px' } }
+            className="form-control  bg-dark text-white"
+            data-testid="name-filter"
+            type="text"
+            placeholder="pesquisar por nome"
+            onChange={ ({ target }) => setFilters(target.value) }
+          />
+        </div>
+        <div className="row g-3">
+          <div className="col-md-3">
+            <select
+              className="form-select bg-secondary bg-opacity-10"
+              data-testid="column-filter"
+              name="columFilter"
+              onChange={ handleChange }
+            >
+              {values.map((el) => <option key={ el } value={ el }>{el}</option>)}
+            </select>
+          </div>
+          <div className="col-md-2">
+            <select
+              className="form-select bg-transparent border-bottom"
+              name="comparisonFilter"
+              value={ options.comparisonFilter }
+              data-testid="comparison-filter"
+              onChange={ handleChange }
+            >
+              <option>maior que</option>
+              <option>menor que</option>
+              <option>igual a</option>
+            </select>
+          </div>
+          <div className="col-md-2">
+            <input
+              className="form-control bg-transparent border-bottom"
+              type="number"
+              data-testid="value-filter"
+              name="number"
+              value={ options.number }
+              onChange={ handleChange }
+            />
+          </div>
+          <div className="col-md-2">
+            <button
+              className="btn btn-dark"
+              type="button"
+              data-testid="button-filter"
+              onClick={ handleClick }
+            >
+              Filtrar
+            </button>
+          </div>
+          <div className="col-md-3">
+            <button
+              className="btn btn-dark"
+              type="button"
+              onClick={ clearFilters }
+              data-testid="button-remove-filters"
+            >
+              Limpar Filtros
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div>
         { numbers.map((el) => (
           <div
             data-testid="filter"
             key={ el.columFilter }
           >
-            <p>{`${el.columFilter} ${el.comparisonFilter}`}</p>
-            <button
-              name={ el.columFilter }
-              type="button"
-              onClick={ deletedButton }
-            >
-              X
+            <div className="container" style={ { display: 'flex', marginTop: '20px' } }>
+              <p>{`${el.columFilter} ${el.comparisonFilter} ${el.number}` }</p>
+              <button
+                style={ { marginLeft: '10px' } }
+                className="btn btn-dark"
+                name={ el.columFilter }
+                type="button"
+                onClick={ deletedButton }
+              >
+                x
+              </button>
+            </div>
 
-            </button>
           </div>
         ))}
-        <button
-          type="button"
-          onClick={ clearFilters }
-          data-testid="button-remove-filters"
-        >
-          Limpar Filtros
-        </button>
+
       </div>
     </div>
+
   );
 }
 export default Form;
