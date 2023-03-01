@@ -1,5 +1,9 @@
 # Star Wars Planets Search
 
+![Tela do projeto](https://raw.githubusercontent.com/brunosbrito/starwars-planets-search/main/public/tela-projeto.png)
+
+Link para acessar a aplicação: [Star Wars Planets Search](https://brunosbrito.github.io/starwars-planets-search/)
+
 # Contexto
 Este projeto trata-se de uma aplicação Front End onde é possivel pesquisar planetas do Star Wars
 
